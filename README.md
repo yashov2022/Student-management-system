@@ -1,14 +1,14 @@
  Student API with Ollama Integration:
 A Spring Boot REST API that manages student records using MySQL + JDBC and generates AI-based student summaries using Ollama (local LLM).
 This project demonstrates backend development, database integration, and local AI model usage without relying on cloud APIs.
- Features:
+ Features of this project are:
 CRUD operations for Students
 MySQL database integration using JdbcTemplate
 AI-generated student summaries using Ollama
 RESTful API design
 Local LLM execution (no cloud dependency)
 
-Tech Stack used is:
+Tech Stack used:
 
 | Layer        | Technology                   |
 | ------------ | ---------------------------- |
