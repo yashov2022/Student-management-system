@@ -12,41 +12,73 @@ public class StudentController {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private OllamaService ollamaService;
+
+    // CREATE student
     @PostMapping
     public ResponseEntity<String> saveStudent(@RequestBody Student student) {
         studentRepository.save(student);
         return ResponseEntity.ok("Student saved");
     }
+
+    // GET all students
     @GetMapping
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
+
+    // GET student by id
     @GetMapping("/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable int id) {
-        try {
-            Student student = studentRepository.findById(id);
-            return ResponseEntity.ok(student);
-        }
-        catch (Exception e) {
+
+        Student student = studentRepository.findById(id);
+
+        if (student == null) {
             return ResponseEntity.notFound().build();
         }
+
+        return ResponseEntity.ok(student);
     }
+
+    // ✅ OLLAMA SUMMARY API
+    @GetMapping("/{id}/summary")
+    public ResponseEntity<String> getStudentSummary(@PathVariable int id) {
+
+        Student student = studentRepository.findById(id);
+
+        if (student == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String summary = ollamaService.generateStudentSummary(student);
+        return ResponseEntity.ok(summary);
+    }
+
+    // UPDATE student
     @PutMapping("/{id}")
     public ResponseEntity<String> updateStudent(@PathVariable int id, @RequestBody Student student) {
+
         int rowsAffected = studentRepository.update(id, student);
+
         if (rowsAffected > 0) {
             return ResponseEntity.ok("Student updated");
-        } else {
-            return ResponseEntity.notFound().build();
         }
+
+        return ResponseEntity.notFound().build();
     }
+
+    // DELETE student
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable int id) {
+
         int rowsAffected = studentRepository.delete(id);
+
         if (rowsAffected > 0) {
             return ResponseEntity.ok("Student deleted");
-        } else {
-            return ResponseEntity.notFound().build();
         }
+
+        return ResponseEntity.notFound().build();
     }
 }
